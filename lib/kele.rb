@@ -24,6 +24,24 @@ class Kele
         body = JSON.parse(response.body)
     end
     
+    def get_messages(arg = nil)
+        url = 'https://www.bloc.io/api/v1/message_threads'
+        response = self.class.get(url, headers: {"authorization" => @auth_token})
+        body = JSON.parse(response.body)
+        if arg == nil
+            pages = (1..response["count"]).map do |n|
+                self.class.get(url, body: { page: n}, headers: {"authorization" => @auth_token})
+            end
+        else
+           self.class.get(url, body: { page: arg }, headers: {"authorization" => @auth_token}) 
+        end
+    end
+    
+    def create_message(user_id, recipient_id, subject, stripped)
+        url = 'https://www.bloc.io/api/v1/messages'
+        self.class.post(url, body: {user_id: user_id, recipient_id: recipient_id, token: nil, subject: subject, stripped: stripped}, headers: {"authorization" => @auth_token})
+    end
+    
     private
     def api_url(endpoint)
         "https://www.bloc.io/api/v1/#{endpoint}"
