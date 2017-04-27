@@ -1,6 +1,6 @@
 require 'httparty'
 require 'json'
-require './kele/roadmap'
+require './lib/kele/roadmap'
 
 class Kele
     include HTTParty
@@ -42,9 +42,9 @@ class Kele
         self.class.post(url, body: {user_id: user_id, recipient_id: recipient_id, token: nil, subject: subject, stripped: stripped}, headers: {"authorization" => @auth_token})
     end
     
-    def create_submission(checkpoint_id, assignment_branch, assignment_commit_link, comment)
+    def create_submission(checkpoint_id, assignment_branch, assignment_commit_link, comment, enrollment_id)
         url = 'https://www.bloc.io/api/v1/checkpoint_submissions'
-        self.class.post(url, body: {checkpoint_id: checkpoint_id, assignment_branch: assignment_branch, assignment_commit_link: assignment_commit_link, comment: comment}, headers: {"authorization" => @auth_token})
+        response = self.class.post(url, body: {"checkpoint_id": checkpoint_id, "assignment_branch": assignment_branch, "assignment_commit_link": assignment_commit_link, "comment": comment, "enrollment_id": enrollment_id}, headers: {"authorization" => @auth_token})
         
     end
     
