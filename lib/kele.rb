@@ -37,9 +37,9 @@ class Kele
         end
     end
     
-    def create_message(user_id, recipient_id, subject, stripped)
+    def create_message(sender_email, recipient_id, token=nil, subject, stripped)
         url = 'https://www.bloc.io/api/v1/messages'
-        self.class.post(url, body: {user_id: user_id, recipient_id: recipient_id, token: nil, subject: subject, stripped: stripped}, headers: {"authorization" => @auth_token})
+        self.class.post(url, body: {sender_email: sender_email, recipient_id: recipient_id, subject: subject, 'stripped-text': stripped}, headers: {"authorization" => @auth_token})
     end
     
     def create_submission(checkpoint_id, assignment_branch, assignment_commit_link, comment, enrollment_id)
